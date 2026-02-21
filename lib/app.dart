@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'state/providers.dart';
 import 'screens/home_screen.dart';
 import 'screens/add_edit_medicine_screen.dart';
 import 'screens/medicine_detail_screen.dart';
@@ -17,7 +19,7 @@ class MyApp extends ConsumerWidget {
       GoRoute(path: '/', builder: (c, s) => const HomeScreen()),
       GoRoute(path: '/add', builder: (c, s) => const AddEditMedicineScreen()),
       GoRoute(path: '/med/:id', builder: (c, s) {
-        final id = int.tryParse(s.params['id'] ?? '0') ?? 0;
+        final id = int.tryParse(s.pathParameters['id'] ?? '0') ?? 0;
         return MedicineDetailScreen(medicineId: id);
       }),
       GoRoute(path: '/missed', builder: (c, s) => const MissedScreen()),

@@ -25,6 +25,30 @@ class HomeScreen extends ConsumerWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(children: [
+          // Low stock alert
+          Consumer(builder: (context, ref, _) {
+            final low = ref.watch(lowStockProvider);
+            if (low.isEmpty) return const SizedBox.shrink();
+            return Card(
+              color: Colors.orange[50],
+              child: ListTile(
+                leading: const Icon(Icons.warning, color: Colors.orange),
+                title: const Text('Low stock'),
+                subtitle: Text(low.map((m) => '${m.name} (${m.remainingQuantity})').join(', ')),
+                trailing: IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () async {
+                    // refill the first low-stock item to full for demo
+                    final first = low.first;
+                    await ref.read(medicinesProvider.notifier).refillToFull(first.id!);
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Refilled')));
+                  },
+                ),
+              ),
+            );
+          }),
+
           Card(
             child: ListTile(
               title: const Text('Next Dose'),
@@ -41,6 +65,14 @@ class HomeScreen extends ConsumerWidget {
                   title: Text(m.name),
                   subtitle: Text('${m.amount} ${m.unit} • ${m.times.join(', ')}'),
                   onTap: () => Navigator.of(context).pushNamed('/med/${m.id}'),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.inventory_2),
+                    onPressed: () async {
+                      await ref.read(medicinesProvider.notifier).refillToFull(m.id!);
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Refilled')));
+                    },
+                  ),
                 );
               },
             ),

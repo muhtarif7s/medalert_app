@@ -24,6 +24,28 @@ class MedicineDetailScreen extends ConsumerWidget {
           Text('Times: ${med.times.join(', ')}'),
           const SizedBox(height: 8),
           Text('Remaining: ${med.remainingQuantity}/${med.totalQuantity}'),
+          const SizedBox(height: 12),
+          Row(children: [
+            ElevatedButton.icon(
+              onPressed: () async {
+                await ref.read(medicinesProvider.notifier).markDose(med.id!, DateTime.now(), 'taken');
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Marked taken')));
+              },
+              icon: const Icon(Icons.check),
+              label: const Text('Take dose'),
+            ),
+            const SizedBox(width: 12),
+            ElevatedButton.icon(
+              onPressed: () async {
+                await ref.read(medicinesProvider.notifier).refillToFull(med.id!);
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Refilled to full')));
+              },
+              icon: const Icon(Icons.refresh),
+              label: const Text('Refill'),
+            ),
+          ]),
         ]),
       ),
     );

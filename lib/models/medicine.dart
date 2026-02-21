@@ -9,6 +9,7 @@ class Medicine {
   Schedule schedule;
   int totalQuantity;
   int remainingQuantity;
+  int refillThreshold;
   DateTime? startDate;
   DateTime? endDate;
 
@@ -21,6 +22,7 @@ class Medicine {
     required this.schedule,
     this.totalQuantity = 0,
     this.remainingQuantity = 0,
+    this.refillThreshold = 0,
     this.startDate,
     this.endDate,
   });
@@ -34,6 +36,7 @@ class Medicine {
         'schedule': schedule.type.name,
         'totalQuantity': totalQuantity,
         'remainingQuantity': remainingQuantity,
+      'refillThreshold': refillThreshold,
         'startDate': startDate?.toIso8601String(),
         'endDate': endDate?.toIso8601String(),
       };
@@ -48,6 +51,7 @@ class Medicine {
       schedule: Schedule(type: ScheduleType.values.firstWhere((e) => e.name == (m['schedule'] ?? 'daily'), orElse: () => ScheduleType.daily)),
       totalQuantity: m['totalQuantity'] ?? 0,
       remainingQuantity: m['remainingQuantity'] ?? 0,
+      refillThreshold: m['refillThreshold'] ?? 0,
       startDate: m['startDate'] != null ? DateTime.tryParse(m['startDate']) : null,
       endDate: m['endDate'] != null ? DateTime.tryParse(m['endDate']) : null,
     );

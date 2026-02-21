@@ -21,6 +21,7 @@ class LocalDatabase {
           schedule TEXT,
           totalQuantity INTEGER,
           remainingQuantity INTEGER,
+          refillThreshold INTEGER,
           startDate TEXT,
           endDate TEXT
         )

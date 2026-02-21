@@ -47,4 +47,9 @@ class SchedulerService {
       return hhmm;
     }
   }
+
+  /// Return a remind-later DateTime from [from]. Default is +10 minutes.
+  DateTime remindLater(DateTime from, {int minutes = 10}) {
+    return from.add(Duration(minutes: minutes));
+  }
 }
